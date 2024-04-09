@@ -11,7 +11,7 @@
       <h2>{{ country.name }}</h2>
       
       {% leaflet_map country.map_container_name callback=country.map_init_name %}
-      <a href="{% url "state" country.sov_a3 %}" type="button" class="absolute inset-0 focus:outline-none">
+      <a href="{% url "state" country.sov_a3 %}" data-turbo="false" class="absolute inset-0 focus:outline-none">
         <span class="sr-only">View details for {{ country.name }} map</span>
       </a>
     </div>
