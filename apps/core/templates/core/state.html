@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% load geojson_tags %}
+{% load leaflet_tags %}
+
+{% block main %}
+  <div class="md:flex md:items-center md:justify-between">
+  <div class="min-w-0 flex-1">
+      <h2 class="text-2xl font-bold leading-7 text-white sm:truncate sm:text-3xl sm:tracking-tight">{{ country.name }}</h2>
+  </div>
+  <div class="mt-4 flex md:ml-4 md:mt-0">
+  </div>
+</div>
+
+<div class="h-screen">
+  {% leaflet_map country.map_container_name callback=country.map_init_name %}
+</div>
+
+<script type="text/javascript">
+function {{ country.sov_a3 }}_init(map, options) {
+  var area = L.geoJson({{ country.geom|geojsonfeature|safe }}).addTo(map);
+  map.fitBounds(area.getBounds());
+}
+</script>
+{% endblock %}

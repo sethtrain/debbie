@@ -1,0 +1,13 @@
+name: debbie
+root: ~/projects/debbie
+pre_window: pyenv activate debbie
+
+windows:
+  - editor: vim
+  - shell: #blank
+  - builds:
+      layout: even-vertical
+      panes:
+        - make watch-js
+        - ./manage.py runserver
+        - make up

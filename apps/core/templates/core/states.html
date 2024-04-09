@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% load geojson_tags %}
+{% load leaflet_tags %}
+
+{% block main %}
+<ul role="list" class="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
+  {% for country in countries %}
+  <li class="relative">
+    <div class="group aspect-h-7 aspect-w-10 block w-full overflow-hidden rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 focus-within:ring-offset-gray-100">
+      <h2>{{ country.name }}</h2>
+      
+      {% leaflet_map country.map_container_name callback=country.map_init_name %}
+      <a href="{% url "state" country.sov_a3 %}" type="button" class="absolute inset-0 focus:outline-none">
+        <span class="sr-only">View details for {{ country.name }} map</span>
+      </a>
+    </div>
+    <p class="pointer-events-none mt-2 block truncate text-sm font-medium text-gray-900 dark:text-gray-200">{{ country.name }}</p>
+    <p class="pointer-events-none block text-sm font-medium text-gray-500 dark:text-gray-400">{{ country.continent }}</p>
+    <script type="text/javascript">
+    function {{ country.sov_a3 }}_init(map, options) {
+        var area = L.geoJson({{ country.geom|geojsonfeature|safe }}).addTo(map);
+        map.fitBounds(area.getBounds());
+      }
+    </script>
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %}
